@@ -67,6 +67,7 @@ export default function App(){
      justifyContent: 'center',
     }}
     >
+        <Text>This is a placeholder text</Text>
     </View>
     )
 }
