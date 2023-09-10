@@ -1,17 +1,16 @@
 import React from 'react';
 import {Text, View} from 'react-native';
 import Intro from './Intro';
-
-import Chat, {Example} from './Chat';
-
+import login from '../components/Login/loginPage';
 export default function App() {
-  const [showHomePage, setShowHomePage] = React.useState(false);
+  const [showHomePage, loginPage] = React.useState(false);
 
   if (!showHomePage) {
     return (
       <Intro
         onDone={() => {
-          setShowHomePage(true);
+         loginPage
+         (true);
         }}
       />
     );
@@ -22,7 +21,7 @@ export default function App() {
         flex: 1,
         justifyContent: 'center',
       }}>
-      <Example />
+     
     </View>
   );
 }

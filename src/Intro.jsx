@@ -2,6 +2,7 @@ import React from 'react';
 import {ImageBackground, View, Text} from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import {COLORS, SIZES} from './Compose/theme';
+import login from '../components/Login/loginPage';
 const slides = [
   {
     id: 1,
@@ -17,7 +18,7 @@ const slides = [
   },
 ];
 
-export default function Intro({onDone}) {
+export default function Intro({onDone=login}) {
   const buttonLabel = labell => {
     return (
       <View>
@@ -45,7 +46,7 @@ export default function Intro({onDone}) {
       renderNextButton={() => buttonLabel('Next')}
       renderSkipButton={() => buttonLabel('Skip')}
       renderDoneButton={() => buttonLabel('Done')}
-      onDone={onDone}
+      onDone={login}
     />
   );
 }
