@@ -1,10 +1,10 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import Intro from './Intro';
-import login from '../components/Login/loginPage';
+import {View} from 'react-native';
+// import Intro from './Intro';
+// import login from '../components/Login/loginPage';
 
 
-import Chat, {Example} from './Chat';
+// import Chat, {Example} from './Chat';
 import SignIn from './SignIn';
 
 export default function App() {

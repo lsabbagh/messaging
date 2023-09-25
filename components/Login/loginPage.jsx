@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import { View,Text, ImageBackground, Button } from "react-native";
 import Style, { style } from './style';
-import Chat from './Chat';
+import Chat from '../../src/Chat';
 export default class App extends Component{
    state={
     blur: 10,

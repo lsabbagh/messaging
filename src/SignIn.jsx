@@ -23,16 +23,19 @@ import axios from 'axios'
 
 const App = () => {
   const [state, setState] = useState({
-    email: '',
+    username: '',
     password: '',
   })
-  const onPressLogin = () => {
-    const user = signIn(state.email, state.password)
+  const set = newState => setState(state => ({...state, ...newState}))
+  const onPressLogin = async () => {
+    const response = await signIn(state.username, state.password)
+    const user = response.user
+    alert(user.username)
     // @TODO:
     // user and user token save on mobile, to be discussed
   };
   const onPressForgotPassword = () => {
-    // @TODO: user can see popup to enter his email so he receives an email with password
+    // @TODO: user can see popup to enter his username so he receives an username with password
     // Do something about forgot password operation
   };
 
@@ -42,9 +45,10 @@ const App = () => {
       <View style={styles.inputView}>
         <TextInput
           style={styles.inputText}
-          placeholder="Email"
+          value={state.username}
+          placeholder="Username"
           placeholderTextColor="#003f5c"
-          onChangeText={text => setState({ email: text })} />
+          onChangeText={text => set({ username: text })} />
       </View>
       <View style={styles.inputView}>
         <TextInput
@@ -52,7 +56,7 @@ const App = () => {
           secureTextEntry
           placeholder="Password"
           placeholderTextColor="#003f5c"
-          onChangeText={text => setState({ password: text })} />
+          onChangeText={text => set({ password: text })} />
       </View>
       
       <TouchableOpacity
@@ -112,13 +116,15 @@ const styles = StyleSheet.create({
 });
 export default App;
 
-const signIn = async (email, password) => {
-  const response = await axios.post({
-    url: '/signin',
-    data: {
-      username,
-      password
-    }
-  })
-  // @TODO: after sign in reponse, continue coding
-}
+const signIn = async (username: any, password: any) => {
+  const response = await fetch("http://192.168.1.10:5000/api/users/signin", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "access-control-allow-origin": "*",
+      },
+      body: JSON.stringify({username, password})
+    })
+  const data = await response.json();
+  return data;
+};
