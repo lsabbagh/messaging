@@ -1,27 +1,10 @@
 import React, { useState } from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import {StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
+import storage from './storage';
 
-import axios from 'axios'
+import {URL} from '@env'
 
-
-const App = () => {
+const SignIn = (props) => {
   const [state, setState] = useState({
     username: '',
     password: '',
@@ -30,13 +13,13 @@ const App = () => {
   const onPressLogin = async () => {
     const response = await signIn(state.username, state.password)
     const user = response.user
-    alert(user.username)
-    // @TODO:
-    // user and user token save on mobile, to be discussed
+    storage.save({
+      key: 'user',
+      data: user
+    })
+    props.route?.params?.onSignIn?.(user)
   };
   const onPressForgotPassword = () => {
-    // @TODO: user can see popup to enter his username so he receives an username with password
-    // Do something about forgot password operation
   };
 
   return (
@@ -114,10 +97,10 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
 });
-export default App;
+export default SignIn;
 
 const signIn = async (username: any, password: any) => {
-  const response = await fetch("http://192.168.1.10:5000/api/users/signin", {
+  const response = await fetch(URL + "users/signin", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

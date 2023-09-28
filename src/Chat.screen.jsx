@@ -1,7 +1,8 @@
 import React, {useState, useCallback, useEffect} from 'react';
 import {GiftedChat} from 'react-native-gifted-chat';
 
-export function Example() {
+const Chat = ({route}) => {
+  const userId = route.params.userId
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -35,3 +36,5 @@ export function Example() {
     />
   );
 }
+
+export default Chat
