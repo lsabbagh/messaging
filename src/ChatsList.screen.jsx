@@ -3,7 +3,6 @@ import { FlatList, View, Text, Button, } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
 import {URL} from '@env'
 import { useNavigation } from '@react-navigation/native';
-import SignOut from './SignOut.screen';
 
 
 
@@ -32,9 +31,7 @@ export default function ChatList({ route, navigation }) {
   }
 
   const onButtonPress = async () => {
-    // <SignOut />
-    await storage.remove({key: 'user'});
-    navigation.navigate('SignIn');
+    route.params.onSignOut()
   }
 
   return (

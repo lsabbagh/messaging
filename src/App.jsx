@@ -18,7 +18,6 @@ import Chat from './Chat.screen';
 import ChatList from './ChatsList.screen';
 import SignInScreen from './SignIn.screen';
 import UsersScreen from './Users.screen';
-// import SignOut from './SignOut.screen';
 
 export default function App() {
 
@@ -28,8 +27,14 @@ export default function App() {
 
   const retrieveUser = async () => {
     setFetching(true)
+    try {
     const user = await storage.load({ key: 'user', autoSync: true, syncInBackground: true })
     setUser(user)
+    } catch (error) {
+      setUser(null)
+      console.log(error);
+    }
+   
     setFetching(false)
   }
   React.useEffect(() => {
@@ -38,11 +43,15 @@ export default function App() {
 
   const onSignIn = (_user) => {
     setUser(_user)
+  } 
+
+  const onSignOut = () => {
+    setUser(null)
   }
 
   const isSignedIn = !!user
 
-  const params = { user }
+  const params = { user, onSignOut }
 
   if (fetching) {
     return <ActivityIndicator size={'large'} />
