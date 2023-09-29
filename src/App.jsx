@@ -60,7 +60,6 @@ export default function App() {
     <Stack.Navigator>
       {isSignedIn && <>
         <Stack.Screen name="Home" component={ChatList} initialParams={params} />
-        {/* <Stack.Screen name="SignOut" component={SignOut} initialParams={params} /> */}
         <Stack.Screen name="Chat" component={Chat} initialParams={params} />
         <Stack.Screen name="Users" component={UsersScreen} initialParams={params} />
       </>}

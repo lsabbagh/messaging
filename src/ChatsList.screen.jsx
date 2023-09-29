@@ -1,9 +1,10 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { FlatList, View, Text, Button, } from 'react-native';
 import { GiftedChat } from 'react-native-gifted-chat';
-import {URL} from '@env'
+import { URL } from '@env'
 import { useNavigation } from '@react-navigation/native';
-
+import { styles } from './styles/ChatListScreen'
+import { colors } from './styles/theme';
 
 
 
@@ -14,7 +15,7 @@ import SignIn from './SignIn.screen';
 
 
 export default function ChatList({ route, navigation }) {
-  const {user} = route.params
+  const { user } = route.params
   const [chats, setChats] = useState(null);
 
   const navigator = useNavigation();
@@ -39,8 +40,8 @@ export default function ChatList({ route, navigation }) {
   }
 
   return (
-    <View style={{ width: '100%', height: '100%', backgroundColor: "lightgreen" }}>
-      <Button onPress={onButtonPress} title="Sign Out">hello</Button>
+    <View style={styles.container}>
+      <Button onPress={onButtonPress} title="Sign Out" style={styles.Button}>hello</Button>
       <FlatList
         data={chats}
         keyExtractor={item => item._id}
@@ -51,9 +52,9 @@ export default function ChatList({ route, navigation }) {
         )}
       />
       {!chats?.length && <Text> no items found</Text>}
-      <FAB title="+" placement='right' style={{}} type='solid'
+      <FAB title="+" placement='right' type='solid' color={colors.bg.v}
         onPress={() => {
-          navigation.navigate('Users', {onSelect})
+          navigation.navigate('Users', { onSelect })
         }} />
 
 

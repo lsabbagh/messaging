@@ -1,6 +1,6 @@
 import React from 'react'
 import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
-
+import { styles } from './styles/UsersScreen'
 import { URL } from '@env'
 // @TODO: fix title (select user), fix style?!
 
@@ -45,18 +45,3 @@ const getUsers = async () => {
     return data;
 };
 
-const styles = StyleSheet.create({
-    userItem: {
-        padding: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    userName: {
-        fontSize: 18,
-        fontWeight: 'bold',
-    },
-    userEmail: {
-        fontSize: 16,
-        color: 'gray',
-    },
-});

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native';
 import storage from './storage';
-
+import { styles } from './styles/SignInScreen';
 import {URL} from '@env'
 
 const SignIn = (props) => {
@@ -56,50 +56,10 @@ const SignIn = (props) => {
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#ddd',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontWeight: "bold",
-    fontSize: 50,
-    color: "#fb5b5a",
-    marginBottom: 40,
-  },
-  inputView: {
-    width: "80%",
-    backgroundColor: "#ababab",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: "center",
-    padding: 20
-  },
-  inputText: {
-    height: 50,
-    color: "white"
-  },
-  forgotAndSignUpText: {
-    color: "white",
-    fontSize: 11
-  },
-  loginBtn: {
-    width: "80%",
-    backgroundColor: "#fb5b5a",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 10
-  },
-});
+
 export default SignIn;
 
-const signIn = async (username: any, password: any) => {
+const signIn = async (username, password) => {
   const response = await fetch(URL + "users/signin", {
       method: "POST",
       headers: {
