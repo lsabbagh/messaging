@@ -14,20 +14,24 @@ import SignIn from './SignIn.screen';
 
 
 export default function ChatList({ route, navigation }) {
+  const {user} = route.params
   const [chats, setChats] = useState(null);
 
   const navigator = useNavigation();
 
   const fetchChats = async () => {
-    const _chats = await getChats(route.params.user)
+    const _chats = await getChats(user)
     setChats(_chats)
   }
   React.useEffect(() => {
     fetchChats()
   }, [])
 
-  const onSelect = user => {
-    navigator.navigate('Chat', {userId: user._id})
+  const onSelect = participant => {
+    navigator.navigate('Chat', {
+      userId: user._id,
+      participantId: participant._id
+    })
   }
 
   const onButtonPress = async () => {
@@ -59,8 +63,7 @@ export default function ChatList({ route, navigation }) {
 
 
 const getChats = async (user) => {
-  const response = await fetch(URL + "conversation/list/" + user._id)
+  const response = await fetch(URL + "conversation/list/" + user?._id)
   const data = await response.json();
-  console.log('....', data)
   return data;
 };
