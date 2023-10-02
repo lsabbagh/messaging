@@ -3,6 +3,7 @@ import {StyleSheet, Text, View, TextInput, TouchableOpacity} from 'react-native'
 import storage from './storage';
 import { styles } from './styles/SignInScreen';
 import {URL} from '@env'
+import { useNavigation } from '@react-navigation/native';
 
 const SignIn = (props) => {
   const [state, setState] = useState({
@@ -10,6 +11,7 @@ const SignIn = (props) => {
     password: '',
   })
   const set = newState => setState(state => ({...state, ...newState}))
+  const navigator = useNavigation();
   const onPressLogin = async () => {
     const response = await signIn(state.username, state.password)
     const user = response.user
@@ -20,6 +22,7 @@ const SignIn = (props) => {
     props.route?.params?.onSignIn?.(user)
   };
   const onPressForgotPassword = () => {
+    navigator.navigate('ForgotPassword')
   };
 
   return (

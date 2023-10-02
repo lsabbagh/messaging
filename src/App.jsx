@@ -18,6 +18,8 @@ import Chat from './Chat.screen';
 import ChatList from './ChatsList.screen';
 import SignInScreen from './SignIn.screen';
 import UsersScreen from './Users.screen';
+import ForgetPassword from './ForgotPassword.Screen';
+
 
 export default function App() {
 
@@ -66,6 +68,7 @@ export default function App() {
 
       {!isSignedIn && <>
         <Stack.Screen name="SignIn" component={SignInScreen} initialParams={{ onSignIn }} />
+        <Stack.Screen name="ForgotPassword" component={ForgetPassword} />
       </>}
 
 
