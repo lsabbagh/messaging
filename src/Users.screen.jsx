@@ -39,9 +39,9 @@ const Users = ({route, navigation}) => {
 
 export default Users
 
-const getUsers = async () => {
-    const response = await fetch(URL + "users/list/")
-    const data = await response.json();
-    return data;
-};
+// const getUsers = async () => {
+//     const response = await fetch(URL + "users/list/")
+//     const data = await response.json();
+//     return data;
+// };
 

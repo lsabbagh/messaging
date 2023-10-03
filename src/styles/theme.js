@@ -2,14 +2,16 @@ export const colors = {
     bg: {
         i: '#fff',      //white
         ii: '#F2F2F2',  //pale grey
-        iii: 'bbbbbb',  //grey
+        iii: '#bbbbbb',  //grey
         iv: '#4FC0D0',  //torquoise blue
         v: '#0069FB',   //bright blue
+        vi: '#098DF3',  //special blue Azure
     },
     font: {
-        i: 'white',
+        i: 'white',     //white
         ii: '#bbbbbb',  //grey
-        iii: 'black',
+        iii: 'black',   //black
+        iv: '#888888',   //dark grey
         s: '#0069FB',   //bright blue
     }
 }

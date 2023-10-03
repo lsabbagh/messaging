@@ -34,7 +34,7 @@ export default function App() {
     setUser(user)
     } catch (error) {
       setUser(null)
-      console.log(error);
+      console.log('error', error);
     }
    
     setFetching(false)
