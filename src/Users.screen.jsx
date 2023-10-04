@@ -2,10 +2,11 @@ import React from 'react'
 import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
 import { styles } from './styles/UsersScreen'
 import { URL } from '@env'
+import { getUsers } from './service'
 // @TODO: fix title (select user), fix style?!
 
 const Users = ({route, navigation}) => {
-
+    console.log('....props', route, navigation);
     const [users, setUsers] = React.useState()
     const fetchUsers = async () => {
         const users = await getUsers()
@@ -38,10 +39,3 @@ const Users = ({route, navigation}) => {
 }
 
 export default Users
-
-// const getUsers = async () => {
-//     const response = await fetch(URL + "users/list/")
-//     const data = await response.json();
-//     return data;
-// };
-

@@ -5,7 +5,7 @@ import { URL } from '@env'
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles/ChatListScreen'
 import { colors } from './styles/theme';
-import { getUsers, getChats } from './service';
+import { getChats } from './service';
 
 
 // @TODO: fix styles, use theme, fix title, add sign out page, add place holder text
@@ -21,44 +21,47 @@ export default function ChatList({ route, navigation }) {
   const navigator = useNavigation();
 
   const fetchChats = async () => {
-    console.log('....user2');
     const _chats = await getChats(user)
-    console.log('....user', _chats);
     setChats(_chats)
   }
   React.useEffect(() => {
-    console.log('....useeffect');
     fetchChats()
   }, [])
 
   const onSelect = participant => {
-    console.log('par', participant);
-    const conversationName = participant.username;
+    console.log('....par', participant);
+    // const conversationName = participant.username;
     navigator.navigate('Chat', {
       userId: user._id,
       participantId: participant._id,
-      conversationName,
+      reciever: participant.username,
     })
   }
 
-  const onChatSelect = (item) => {
-
+  const onChatSelect = (converastion) => {
+    console.log('....par', user, '\n', 'pp', converastion);
+    navigator.navigate('Chat', {
+      userId: user._id,
+      participantId: converastion.item.otherParticipant._id,
+      reciever: converastion.item.otherParticipant.username,
+      // conversationName,
+    })
   }
 
-  const onButtonPress = async () => {
-    route.params.onSignOut()
-  }
+  // const onButtonPress = async () => {
+  //   route.params.onSignOut()
+  // }
 
-  console.log('.....chats', chats)
+  console.log('.....chatsss', chats)
   return (
     <View style={styles.container}>
-      <Button onPress={onButtonPress} title="Sign Out" style={styles.Button}>hello</Button>
+      {/* <Button onPress={onButtonPress} title="Sign Out" style={styles.Button}>hello</Button> */}
       <FlatList
         data={chats}
         keyExtractor={item => item._id}
         renderItem={({ item }) => (
-          <TouchableOpacity style={styles.chatButton} onPress={onChatSelect(item)}>
-            <Text style={styles.chatName}>{item.name}</Text>
+          <TouchableOpacity style={styles.chatButton} onPress={()=>onChatSelect({item})}>
+            <Text style={styles.chatName}>{item.otherParticipant?.username}</Text>
           </TouchableOpacity>
         )}
       />
@@ -73,9 +76,11 @@ export default function ChatList({ route, navigation }) {
   );
 }
 
-
-// const getChats = async (user) => {
-//   const response = await fetch(URL + "conversation/list/" + user?._id)
-//   const data = await response.json();
-//   return data;
-// };
+// ChatList.navigationOptions = ({ navigation }) => ({
+//   title: 'Chat List',
+//   headerRight: () => (
+//     <TouchableOpacity onPress={() => navigation.getParam('signOut')} style={{backgroundColor: 'blue'}}>
+//       <Text style={{}}>Sign Out</Text>
+//     </TouchableOpacity>
+//   ),
+// });

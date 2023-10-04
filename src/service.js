@@ -1,3 +1,5 @@
+import { URL } from '@env'
+
 export const getUsers = async () => {
     const response = await fetch(URL + "users/list/")
     const data = await response.json();
@@ -25,8 +27,16 @@ export const appendMessages = async ({ conversationId, messages }) => {
 
 }
 
-export const getChat = async ({ userId, participantId, conversationName }) => {
-    const response = await fetch(URL + ['conversation', userId, participantId].join('/'), { method: 'POST', body: JSON.stringify({conversationName}) })
+export const getChat = async ({ userId, participantId, title }) => {
+    console.log('....go or go', );
+    const response = await fetch(URL + ['conversation', userId, participantId].join('/'), {
+        method: 'POST',
+        body: {
+            title,
+        }
+    })
+    console.log('....half gone', response);
     const data = await response.json();
+    console.log('....data', data);
     return data;
   };
