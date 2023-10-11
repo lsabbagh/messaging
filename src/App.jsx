@@ -1,7 +1,6 @@
 import React from 'react';
 import storage from './storage';
 
-
 import { NavigationContainer, Screen } from '@react-navigation/native';
 
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -20,41 +19,59 @@ import SignInScreen from './SignIn.screen';
 import UsersScreen from './Users.screen';
 import ForgetPassword from './ForgotPassword.Screen';
 import { colors } from './styles/theme';
+import { logout, storageData } from './service';
 
 
 export default function App() {
 
-  const [user, setUser] = React.useState(null)
+  const [savedData, setSavedData] = React.useState(null)
   const [fetching, setFetching] = React.useState(true)
-  const [reciever, setReciever] = React.useState(null)
+  const [receiver, setReceiver] = React.useState(null)
+
+  
 
   const retrieveUser = async () => {
-    setFetching(true)
+    setFetching(true);
     try {
-      const user = await storage.load({ key: 'user', autoSync: true, syncInBackground: true })
-      setUser(user)
+      const data = await storageData();
+      setSavedData(data);
+      console.log('....data ret', savedData);
     } catch (error) {
-      setUser(null)
+      setSavedData(null)
       console.log('error', error);
     }
 
     setFetching(false)
   }
-  React.useEffect(() => {
+  React.useEffect(() => {//console.log('....lk', savedData);
     retrieveUser()
   }, [])
 
-  const onSignIn = (_user) => {
-    setUser(_user)
+  const onSignIn = (data) => {
+
+    setSavedData(data);
   }
 
-  const getReciever = (data) => {
-    setReciever(data)
+  const getReceiver = (data) => {
+    setReceiver(data)
   }
 
-  const isSignedIn = !!user
+  const handleLogout = async (_user) => {
+    await logout(_user._id);
+    await storage.remove({ key: 'auth' });
+    // setUser(null);
+    setSavedData(null)
+    console.log('....logout successful');
+  }
 
-  const params = { user, getReciever }
+  // const token = savedData.token;
+  const user = savedData?.user;
+  const token = savedData?.token
+  console.log('....', token);
+  // const isSignedIn = false //user
+  const isSignedIn = !!token;
+
+  const params = { user, getReceiver, token }
 
   if (fetching) {
     return <ActivityIndicator size={'large'} />
@@ -62,8 +79,8 @@ export default function App() {
   return <NavigationContainer>
     <Stack.Navigator>
       {isSignedIn && <>
-        <Stack.Screen name="Home" component={ChatList} initialParams={params} options={() => ({ title: "Home", headerRight: () => ( <Button onPress={() => setUser(null)} title="Sign Out" color={colors.bg.v}/> )})} />
-        <Stack.Screen name="Chat" component={Chat} initialParams={params} options={()=> ({title: reciever})}/>
+        <Stack.Screen name="Home" component={ChatList} initialParams={params} options={() => ({ title: "Home", headerRight: () => (<Button onPress={() => handleLogout(user)} title="Log Out" color={colors.bg.v} />) })} />
+        <Stack.Screen name="Chat" component={Chat} initialParams={params} options={() => ({ title: receiver })} />
         <Stack.Screen name="Users" component={UsersScreen} initialParams={params} />
       </>}
 

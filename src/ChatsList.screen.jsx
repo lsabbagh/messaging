@@ -1,6 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { FlatList, View, Text, Button, TouchableOpacity, } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
 import { URL } from '@env'
 import { useNavigation } from '@react-navigation/native';
 import { styles } from './styles/ChatListScreen'
@@ -22,6 +21,7 @@ export default function ChatList({ route, navigation }) {
 
   const fetchChats = async () => {
     const _chats = await getChats(user)
+    const sortedchats = null;
     setChats(_chats)
   }
   React.useEffect(() => {
@@ -32,27 +32,33 @@ export default function ChatList({ route, navigation }) {
     console.log('....par', participant);
     // const conversationName = participant.username;
     navigator.navigate('Chat', {
-      userId: user._id,
+      user,
       participantId: participant._id,
-      reciever: participant.username,
+      type: "conversation",
+      receiver: participant.username,
     })
   }
 
   const onChatSelect = (converastion) => {
     console.log('....par', user, '\n', 'pp', converastion);
+    const type = converastion.item.type;
+    const title = type === 'group' ? converastion.item.title : converastion.item.otherParticipant.username
     navigator.navigate('Chat', {
-      userId: user._id,
+      user,
       participantId: converastion.item.otherParticipant._id,
-      reciever: converastion.item.otherParticipant.username,
+      conversationId: converastion.item._id,
+      type,
+      receiver: title,
       // conversationName,
     })
+    console.log('....receiver', title);
   }
 
   // const onButtonPress = async () => {
   //   route.params.onSignOut()
   // }
 
-  console.log('.....chatsss', chats)
+  console.log('....chatsss', chats)
   return (
     <View style={styles.container}>
       {/* <Button onPress={onButtonPress} title="Sign Out" style={styles.Button}>hello</Button> */}
@@ -61,7 +67,9 @@ export default function ChatList({ route, navigation }) {
         keyExtractor={item => item._id}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.chatButton} onPress={()=>onChatSelect({item})}>
-            <Text style={styles.chatName}>{item.otherParticipant?.username}</Text>
+            <Text style={styles.chatName}>
+            {item.type === 'group' ? item.title : (item.otherParticipant?.username)}
+            </Text>
           </TouchableOpacity>
         )}
       />

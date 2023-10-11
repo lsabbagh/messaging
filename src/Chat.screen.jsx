@@ -1,17 +1,31 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, InputToolbar, Bubble } from 'react-native-gifted-chat';
 import { appendMessages, getChat } from './service';
 import { URL } from '@env'
 
 const Chat = ({ route }) => {
-  const { userId, participantId, reciever } = route.params
-
+  const { user, participantId, conversationId, type, receiver } = route.params
   const [chat, setChat] = useState({ converastion: null, messages: [] });
+  const [userNames, setUserNames] = useState({});
+  console.log('....check', { user, participantId, conversationId, type, receiver });
+
+  let id = participantId
 
   const fetchChat = async () => {
-    console.log('....chat', chat);
-    const { conversation, messages } = await getChat({ userId, participantId, title });
+    if (type === 'conversation') {
+      id = participantId
+    } else if (type === 'group') {
+      id = conversationId
+    }
+    console.log('....chat', chat, receiver);
+
+    const data = await getChat({ type, id, userId: user._id });
+    console.log('....2nd conv', data);
+
+    const { conversation, messages } = data
     const sortedMessages = messages.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+    console.log('....sorted messages', sortedMessages);
     setChat({
       conversation,
       messages: sortedMessages
@@ -19,23 +33,47 @@ const Chat = ({ route }) => {
   }
   React.useEffect(() => {
     fetchChat();
-    route.params.getReciever(reciever);
+    route.params.getReceiver(receiver);
     console.log('....chat2', chat);
   }, [])
 
   const append = async (newMessages) => {
-    await appendMessages({ 
+    await appendMessages({
       conversationId: chat?.conversation?._id,
       messages: newMessages
     })
     fetchChat()
   }
 
+  console.log('....chat3', chat);
   return (
     <GiftedChat
       messages={chat?.messages}
       onSend={messages => append(messages)}
-      user={{_id: userId}}
+      user={{ _id: user._id, name: user.username }}
+      renderUsernameOnMessage={true}
+      // renderAvatarOnTop
+      textInputStyle={{
+        backgroundColor: 'white',
+        borderRadius: 20,
+        borderWidth: 0.8,
+        borderColor: '#bbb',
+        paddingHorizontal: 12,
+        marginTop: 4,
+        marginBottom: 6,
+        marginRight: 4,
+        marginLeft: 6,
+      }}
+      renderInputToolbar={(props) => {
+        return (
+          <InputToolbar
+            containerStyle={{ backgroundColor: '#f6f6f6' }}
+            {...props}
+          />
+        )
+      }}
+      scrollToBottom
+      infiniteScroll
     />
   );
 }

@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, Pressable }
 import storage from './storage';
 import { styles } from './styles/SignInScreen';
 import { URL } from '@env'
+import { signIn } from './service';
 import { useNavigation } from '@react-navigation/native';
 
 const SignIn = (props) => {
@@ -13,26 +14,29 @@ const SignIn = (props) => {
   })
   const set = newState => setState(state => ({ ...state, ...newState }))
   const navigator = useNavigation();
+
+
   const onPressLogin = async () => {
     if(state.username == '' || state.password == '' || state.password == null) {
-      console.log('stopped');
+      console.log('....stopped');
       return;
     };
+
     const response = await signIn(state.username, state.password)
     if (!response.match) {
-      console.log('stopped..2', response);
+      console.log('....stopped..2', response);
       setModalVisible(true);
       set({ username: '', password: '' });       
       return;
     };
-    console.log('go');
-    const user = response.user
+    console.log('....go', );
     storage.save({
-      key: 'user',
-      data: user
+      key: 'auth',
+      data: response
     })
-    props.route?.params?.onSignIn?.(user)
+    props.route?.params?.onSignIn(response)
   };
+
   const onPressForgotPassword = () => {
     navigator.navigate('ForgotPassword')
   };
@@ -93,17 +97,3 @@ const SignIn = (props) => {
 }
 
 export default SignIn;
-
-const signIn = async (username, password) => {
-  const response = await fetch(URL + "users/signin", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "access-control-allow-origin": "*",
-    },
-    body: JSON.stringify({ username, password })
-  })
-  const data = await response.json();
-  console.log(data);
-  return data;
-};
