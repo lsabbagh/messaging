@@ -3,13 +3,14 @@ import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native
 import { styles } from './styles/UsersScreen'
 import { URL } from '@env'
 import { getUsers } from './service'
-// @TODO: fix title (select user), fix style?!
+
 
 const Users = ({route, navigation}) => {
+    const {user, token} = route.params;
     console.log('....props', route, navigation);
     const [users, setUsers] = React.useState()
     const fetchUsers = async () => {
-        const users = await getUsers()
+        const users = await getUsers({userId: user._id, token})
         setUsers(users)
     }
 

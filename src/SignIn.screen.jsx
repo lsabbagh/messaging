@@ -29,7 +29,7 @@ const SignIn = (props) => {
       set({ username: '', password: '' });       
       return;
     };
-    console.log('....go', );
+    console.log('....logging In', response);
     storage.save({
       key: 'auth',
       data: response

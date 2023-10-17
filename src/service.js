@@ -1,8 +1,15 @@
 import { URL } from '@env'
 import storage from './storage';
 
+export const storageData = async () => {
+    const response = await storage.load({ key: 'auth', autoSync: true, syncInBackground: true });
+    console.log('....strorage data', response);
+    return response;
+};
+
+
 export const signIn = async (username, password) => {
-    const response = await fetch(URL + "auth/login", {
+    const response = await fetch(URL + "login", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -15,81 +22,122 @@ export const signIn = async (username, password) => {
     return data;
 };
 
-export const logout = async (userId) => {
-    console.log('....4', userId);
-    const response = await fetch(URL + "auth/logout/" + userId, {
+export const logout = async ({userId, token}) => {
+    const authType = 'mbl';
+    console.log('....4', userId, authType);
+    const response = await fetch(URL + "logout/" + userId, {
         method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+            // "userId": userId,
+            // "authType": "mbl",
+            // "token": token
+        },
+        body: JSON.stringify({authType})
     })
     if (!response.ok) {
-        console.log('....error logging out',);
+        console.log('....error logging out', response);
         throw new Error('Network response was not ok');
     }
     const data = response.json();
     console.log('....logoutt', data);
     return data;
-}
+};
 
-export const storageData = async () => {
-    const response = await storage.load({ key: 'auth', autoSync: true, syncInBackground: true });
-    console.log('....strorage data', response);
-    return response;
-}
+export const getUsers = async ({userId, token}) => {
+    const response = await fetch(URL + "users/list", {
+        headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+            "userid": userId,
+            "authType": "mbl",
+            "token": token
+        }
+    });
 
-export const getUsers = async () => {
-    const response = await fetch(URL + "users/list")
+    if (response.status === 401) {
+        await logout({ userId, token });
+        await storage.remove({ key: 'auth' });
+        throw new Error('Unauthorized: Logging out user');
+    };
+
     const data = await response.json();
+    console.log('....users', data);
     return data;
 };
 
-export const getChats = async (user) => {
-    const response = await fetch(URL + "conversation/list/" + user?._id)
+export const getChats = async ({user, token}) => {
+    const response = await fetch(URL + "conversation/list/" + user?._id, {
+        method:"GET",
+        headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+            "userid": user?._id,
+            "authType": "mbl",
+            "token": token
+        }
+    });
+
+    if (response.status === 401) {
+        await logout({ userId: user?._id, token });
+        await storage.remove({ key: 'auth' });
+        throw new Error('Unauthorized: Logging out user');
+    };
+
     const data = await response.json();
     console.log('....chats', data);
     return data;
 };
 
-export const appendMessages = async ({ conversationId, messages }) => {
+export const appendMessages = async ({ conversationId, messages, userId, token }) => {
     console.log('....append messages', { conversationId, messages });
     const response = await fetch(URL + 'message/append/' + conversationId, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
             "access-control-allow-origin": "*",
+            "userid": userId,
+            "authType": "mbl",
+            "token": token
         },
         body: JSON.stringify({ messages })
-    })
+    });
+
+    if (response.status === 401) {
+        await logout({ userId, token });
+        await storage.remove({ key: 'auth' });
+        throw new Error('Unauthorized: Logging out user');
+    };
 
     const data = await response.json();
     console.log('....append complete', data);
     return data;
+};
 
-}
-
-export const getChat = async ({ type, id, userId }) => {
+export const getChat = async ({ type, id, userId, token }) => {
     const response = await fetch(URL + 'conversation/' + userId, {
         method: 'POST',
         headers: {
             "Content-Type": "application/json",
             "access-control-allow-origin": "*",
+            "userid": userId,
+            "authType": "mbl",
+            "token": token
         },
         body: JSON.stringify({
             type,
             id
         })
-    })
+    });
+
+    if (response.status === 401) {
+        await logout({ userId, token });
+        await storage.remove({ key: 'auth' });
+        throw new Error('Unauthorized: Logging out user');
+    };
+    
     const data = await response.json();
-    console.log('....data', data);
+    console.log('....getchat', data);
     return data;
 };
-
-// export const getGroupChat = async ({ userId, conversationId }) => {
-//     console.log('....getGroupChat', '\n', userId, '\n', conversationId);
-//     const response = await fetch(URL + 'conversation/groups/' + userId, {
-//         method: 'POST',
-//         body: JSON.stringify({conversationId}),
-//     })
-//     console.log('....half gone group', response);
-//     const data = await response.json();
-//     console.log('....group data', data);
-//     return data;
-// };

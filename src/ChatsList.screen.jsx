@@ -7,20 +7,19 @@ import { colors } from './styles/theme';
 import { getChats } from './service';
 
 
-// @TODO: fix styles, use theme, fix title, add sign out page, add place holder text
 import { FAB } from 'react-native-elements';
 import storage from './storage';
 import SignIn from './SignIn.screen';
 
 
 export default function ChatList({ route, navigation }) {
-  const { user } = route.params
+  const { user, token } = route.params
   const [chats, setChats] = useState(null);
 
   const navigator = useNavigation();
 
   const fetchChats = async () => {
-    const _chats = await getChats(user)
+    const _chats = await getChats({user, token})
     const sortedchats = null;
     setChats(_chats)
   }
@@ -58,7 +57,7 @@ export default function ChatList({ route, navigation }) {
   //   route.params.onSignOut()
   // }
 
-  console.log('....chatsss', chats)
+  console.log('....chatsList', chats)
   return (
     <View style={styles.container}>
       {/* <Button onPress={onButtonPress} title="Sign Out" style={styles.Button}>hello</Button> */}

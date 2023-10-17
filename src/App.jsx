@@ -25,17 +25,20 @@ import { logout, storageData } from './service';
 export default function App() {
 
   const [savedData, setSavedData] = React.useState(null)
-  const [fetching, setFetching] = React.useState(true)
+  const [fetching, setFetching] = React.useState(false)
   const [receiver, setReceiver] = React.useState(null)
 
-  
+  const user = savedData?.user;
+  const token = savedData?.token
+
 
   const retrieveUser = async () => {
     setFetching(true);
     try {
+      console.log('....1 11', );
       const data = await storageData();
       setSavedData(data);
-      console.log('....data ret', savedData);
+      console.log('....savedData', savedData);
     } catch (error) {
       setSavedData(null)
       console.log('error', error);
@@ -43,8 +46,9 @@ export default function App() {
 
     setFetching(false)
   }
-  React.useEffect(() => {//console.log('....lk', savedData);
+  React.useEffect(async() => {
     retrieveUser()
+    // await storage.remove({ key: 'auth' });
   }, [])
 
   const onSignIn = (data) => {
@@ -57,18 +61,13 @@ export default function App() {
   }
 
   const handleLogout = async (_user) => {
-    await logout(_user._id);
+    console.log('....logout began', _user);
+    await logout({userId: _user._id, token});
     await storage.remove({ key: 'auth' });
-    // setUser(null);
     setSavedData(null)
     console.log('....logout successful');
   }
 
-  // const token = savedData.token;
-  const user = savedData?.user;
-  const token = savedData?.token
-  console.log('....', token);
-  // const isSignedIn = false //user
   const isSignedIn = !!token;
 
   const params = { user, getReceiver, token }

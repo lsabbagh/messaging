@@ -4,9 +4,9 @@ import { appendMessages, getChat } from './service';
 import { URL } from '@env'
 
 const Chat = ({ route }) => {
-  const { user, participantId, conversationId, type, receiver } = route.params
+  const { user, participantId, conversationId, type, receiver, token } = route.params
   const [chat, setChat] = useState({ converastion: null, messages: [] });
-  const [userNames, setUserNames] = useState({});
+
   console.log('....check', { user, participantId, conversationId, type, receiver });
 
   let id = participantId
@@ -19,7 +19,7 @@ const Chat = ({ route }) => {
     }
     console.log('....chat', chat, receiver);
 
-    const data = await getChat({ type, id, userId: user._id });
+    const data = await getChat({ type, id, userId: user._id, token });
     console.log('....2nd conv', data);
 
     const { conversation, messages } = data
@@ -40,7 +40,9 @@ const Chat = ({ route }) => {
   const append = async (newMessages) => {
     await appendMessages({
       conversationId: chat?.conversation?._id,
-      messages: newMessages
+      messages: newMessages,
+      userId: user?._id,
+      token
     })
     fetchChat()
   }
