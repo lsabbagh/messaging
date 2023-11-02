@@ -1,52 +1,37 @@
-import React from 'react';
-import {ImageBackground, View, Text} from 'react-native';
-import AppIntroSlider from 'react-native-app-intro-slider';
-import {COLORS, SIZES} from './Compose/theme';
-import login from '../components/Login/loginPage';
-const slides = [
-  {
-    id: 1,
-    image: require('./assets/images/Hey.png'),
-  },
-  {
-    id: 2,
-    image: require('./assets/images/2.png'),
-  },
-  {
-    id: 3,
-    image: require('./assets/images/3.png'),
-  },
-];
+import React, { useEffect } from 'react';
+import { View, Image, Text, StyleSheet } from 'react-native';
 
-export default function Intro({onDone=login}) {
-  const buttonLabel = labell => {
-    return (
-      <View>
-        <Text>{labell}</Text>
-      </View>
-    );
-  };
+const Splash = ({ navigation }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigation.navigate('App'); 
+    }, 750);
+  }, []);
+
   return (
-    <AppIntroSlider
-      data={slides}
-      renderItem={({item}) => {
-        return (
-          <View style={{flex: 1, alignItems: 'center'}}>
-            <ImageBackground
-              source={item.image}
-              style={{
-                width: SIZES.width,
-                height: SIZES.height,
-              }}
-            />
-          </View>
-        );
-      }}
-      activeDotStyle={{backgroundColor: COLORS.primary, width: 30}}
-      renderNextButton={() => buttonLabel('Next')}
-      renderSkipButton={() => buttonLabel('Skip')}
-      renderDoneButton={() => buttonLabel('Done')}
-      onDone={login}
-    />
+    <View style={styles.container}>
+      <Image src='' style={styles.logo} />
+      <Text style={styles.appName}>Your App Name</Text>
+    </View>
   );
-}
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white', 
+  },
+  logo: {
+    width: 100, 
+    height: 100, 
+  },
+  appName: {
+    marginTop: 20,
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+});
+
+export default Splash;

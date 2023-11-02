@@ -1,7 +1,7 @@
 import { colors, sizes } from './theme';
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors) => StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.bg.ii,
@@ -50,11 +50,11 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginTop: 22,
     margin: 20,
-    backgroundColor: 'white',
+    backgroundColor: colors.bg.i,
     borderRadius: 20,
     padding: 35,
     alignItems: 'center',
-    shadowColor: '#000',
+    shadowColor: colors.font.iii,
     shadowOffset: {
       width: 0,
       height: 2,

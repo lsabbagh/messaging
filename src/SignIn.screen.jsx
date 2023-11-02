@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Modal, Pressable } from 'react-native';
 import storage from './storage';
-import { styles } from './styles/SignInScreen';
+import { useTheme } from './styles/ThemeContext';
+import { getColors, colors } from './styles/theme';
+import { getStyles } from './styles/SignInScreen';
 import { URL } from '@env'
 import { signIn } from './service';
 import { useNavigation } from '@react-navigation/native';
@@ -15,9 +17,13 @@ const SignIn = (props) => {
   const set = newState => setState(state => ({ ...state, ...newState }))
   const navigator = useNavigation();
 
+  const { name } = useTheme()
+  const colors = getColors(name)
+  const styles = getStyles(colors)
+
 
   const onPressLogin = async () => {
-    if(state.username == '' || state.password == '' || state.password == null) {
+    if (state.username == '' || state.password == '' || state.password == null) {
       console.log('....stopped');
       return;
     };
@@ -26,7 +32,7 @@ const SignIn = (props) => {
     if (!response.match) {
       console.log('....stopped..2', response);
       setModalVisible(true);
-      set({ username: '', password: '' });       
+      set({ username: '', password: '' });
       return;
     };
     console.log('....logging In', response);
@@ -35,6 +41,7 @@ const SignIn = (props) => {
       data: response
     })
     props.route?.params?.onSignIn(response)
+    console.log('....login success...signin.screen',);
   };
 
   const onPressForgotPassword = () => {

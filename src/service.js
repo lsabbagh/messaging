@@ -7,6 +7,12 @@ export const storageData = async () => {
     return response;
 };
 
+export const getStorageTheme = async () => {
+    const response = await storage.load({ key: 'theme', autoSync: true, syncInBackground: true });
+    console.log('....strorage theme', response);
+    return response;
+};
+
 
 export const signIn = async (username, password) => {
     const response = await fetch(URL + "login", {
@@ -22,7 +28,7 @@ export const signIn = async (username, password) => {
     return data;
 };
 
-export const logout = async ({userId, token}) => {
+export const logout = async ({ userId, token }) => {
     const authType = 'mbl';
     console.log('....4', userId, authType);
     const response = await fetch(URL + "logout/" + userId, {
@@ -34,18 +40,19 @@ export const logout = async ({userId, token}) => {
             // "authType": "mbl",
             // "token": token
         },
-        body: JSON.stringify({authType})
+        body: JSON.stringify({ authType })
     })
     if (!response.ok) {
         console.log('....error logging out', response);
         throw new Error('Network response was not ok');
     }
     const data = response.json();
-    console.log('....logoutt', data);
+    console.log('....service..logoutt', data);
     return data;
 };
 
-export const getUsers = async ({userId, token}) => {
+
+export const getUsers = async ({ userId, token }) => {
     const response = await fetch(URL + "users/list", {
         headers: {
             "Content-Type": "application/json",
@@ -67,13 +74,13 @@ export const getUsers = async ({userId, token}) => {
     return data;
 };
 
-export const getChats = async ({user, token}) => {
+export const getChats = async ({ user, token }) => {
     const response = await fetch(URL + "conversation/list/" + user?._id, {
-        method:"GET",
+        method: "GET",
         headers: {
             "Content-Type": "application/json",
             "access-control-allow-origin": "*",
-            "userid": user?._id,
+            // "userid": user?._id,
             "authType": "mbl",
             "token": token
         }
@@ -136,8 +143,57 @@ export const getChat = async ({ type, id, userId, token }) => {
         await storage.remove({ key: 'auth' });
         throw new Error('Unauthorized: Logging out user');
     };
-    
+
     const data = await response.json();
     console.log('....getchat', data);
     return data;
 };
+
+
+
+export const getProfileData = async ({ userId, token }) => {
+    const response = await fetch(URL + 'users/user/profile/' + userId, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+            "userid": userId,
+            "authType": "mbl",
+            "token": token
+        },
+    });
+    if (response.status === 401) {
+        await logout({ userId, token });
+        await storage.remove({ key: 'auth' });
+        throw new Error('Unauthorized: Logging out user');
+    };
+
+    const data = await response.json();
+    console.log('....getProfileData', data);
+    return data;
+}
+
+
+export const editProfileData = async ({ userId, token, state }) => {
+    console.log('....updatedData', state);
+    const response = await fetch(URL + 'users/user/profile/' + userId, {
+        method: 'PUT',
+        headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+            "userid": userId,
+            "authType": "mbl",
+            "token": token
+        },
+        body: JSON.stringify(state)
+    });
+    if (response.status === 401) {
+        await logout({ userId, token });
+        await storage.remove({ key: 'auth' });
+        throw new Error('Unauthorized: Logging out user');
+    };
+
+    const data = await response.json();
+    console.log('....editProfileData', data);
+    return data;
+}

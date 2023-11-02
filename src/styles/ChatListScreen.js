@@ -1,11 +1,11 @@
-import { colors, sizes } from './theme';
+import { getColors, sizes } from './theme';
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors) => StyleSheet.create({
     container: {
         width: '100%',
         height: '100%',
-        backgroundColor: colors.bg.l,
+        backgroundColor: colors.bg.i,
     },
     button: {
         backgroundColor: colors.bg.i,
@@ -22,6 +22,7 @@ export const styles = StyleSheet.create({
         alignItems: 'center',
         flex: 1,
         bottom: 50,
+        color: colors.font.iv
     },
     chatButton: {
         width: '100%',
@@ -29,9 +30,28 @@ export const styles = StyleSheet.create({
         borderBottomStyle: 'solid',
         borderBottomWidth: 1,
         borderBottomColor: colors.font.iv,
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
+    profileContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center'
+    } ,
+    profilePic: {
+        height: 40,
+        width: 40,
+        borderRadius: 20,
+        marginRight: 10,
+        top: 1,
     },
     chatName: {
         fontSize: sizes.par,
         color: colors.font.iii,
+    },
+    timeStamp: {
+        fontSize: 10,
+        color: colors.font.iv,
     },
 })

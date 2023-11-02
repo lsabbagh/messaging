@@ -1,6 +1,8 @@
 import { FlatList, View, Text, Button, LogBox, TextInput, TouchableOpacity } from 'react-native';
 import React from 'react';
-import { styles } from './styles/SignInScreen';
+import { useTheme } from './styles/ThemeContext';
+import { getColors, colors } from './styles/theme';
+import { getStyles } from './styles/SignInScreen';
 
 
 
@@ -10,11 +12,15 @@ export default function ForgetPassword() {
         email: '',
     })
     const set = newState => setState(state => ({ ...state, ...newState }))
-    console.log(state);
+    console.log('....', state);
+
+    // const { name } = useTheme()
+    // const colors = getColors(name)
+    const styles = getStyles(colors)
 
     const onPressLogin = async () => {
         const response = await forgetPass(state.username, state.password)
-        
+
     }
 
     return (
@@ -48,11 +54,11 @@ const forgetPass = async (username, email) => {
     const response = await fetch(URL + "users/forgetpassword", {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "access-control-allow-origin": "*",
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
         },
-        body: JSON.stringify({_username, _password})
-      })
+        body: JSON.stringify({ _username, _password })
+    })
     const data = await response.json();
     return data;
-  };
+};

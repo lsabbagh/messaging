@@ -1,18 +1,22 @@
 import { colors, sizes } from './theme';
 import { StyleSheet } from 'react-native';
 
-export const styles = StyleSheet.create({
+export const getStyles = (colors) => StyleSheet.create({
+    container: {
+        backgroundColor: colors.bg.ii,
+    },
     userItem: {
         padding: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
+        borderBottomColor: colors.font.v,
     },
     userName: {
         fontSize: sizes.par,
-        fontWeight: 'bold',
+        // fontWeight: 'bold',
+        color: colors.font.iii,
     },
     userEmail: {
         fontSize: sizes.smallPar,
-        color: colors.bg.iii,
+        color: colors.font.iv,
     },
 });

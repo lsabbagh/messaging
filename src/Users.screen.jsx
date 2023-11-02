@@ -1,30 +1,39 @@
 import React from 'react'
 import { FlatList, TouchableOpacity, View, Text, StyleSheet } from 'react-native'
-import { styles } from './styles/UsersScreen'
 import { URL } from '@env'
 import { getUsers } from './service'
+import { getStyles } from './styles/UsersScreen'
+import { getColors, colors } from './styles/theme'
+import { useTheme } from './styles/ThemeContext'
 
 
-const Users = ({route, navigation}) => {
-    const {user, token} = route.params;
+const Users = ({ route, navigation }) => {
+    const { user, token } = route.params;
     console.log('....props', route, navigation);
-    const [users, setUsers] = React.useState()
+    const [users, setUsers] = React.useState();
+
+    const { name } = useTheme()
+    const colors = getColors(name)
+    const styles = getStyles(colors)
+
     const fetchUsers = async () => {
-        const users = await getUsers({userId: user._id, token})
+        const users = await getUsers({ userId: user._id, token })
         setUsers(users)
     }
 
     React.useEffect(() => {
         fetchUsers()
-    }, [])
+    }, []);
+
     const onSelect = (user) => {
         const _onSelect = route.params?.onSelect;
-        if(_onSelect) {
+        if (_onSelect) {
             navigation.goBack()
         }
         _onSelect?.(user)
     }
-    return <View>
+
+    return <View style={styles.container}>
         <FlatList
             data={users}
             keyExtractor={item => item._id}
