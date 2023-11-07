@@ -15,6 +15,7 @@ export const getStorageTheme = async () => {
 
 
 export const signIn = async (username, password) => {
+    console.log('....service..login', );
     const response = await fetch(URL + "login", {
         method: "POST",
         headers: {

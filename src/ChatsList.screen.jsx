@@ -33,12 +33,9 @@ export default function ChatList({ route, navigation }) {
         const year = lastMessage.getFullYear();
         const month = lastMessage.getMonth();
         const day = lastMessage.getDate();
-        const formattedDate = `${day}/${month}/${year}`
-        console.log('....time..year.match', lastMessage.getFullYear());
+        const formattedDate = `${day}/${month}/${year}`;
         if (lastMessage.getMonth() === currentTime.getMonth()) {
-          console.log('....time..month.match', lastMessage.getMonth());
           if (lastMessage.getDate() === currentTime.getDate()) {
-            console.log('....time..day.match', lastMessage.getDate());
             const hours = lastMessage.getHours();
             const minutes = lastMessage.getMinutes();
             const formattedTime = `${hours}:${minutes}`;
@@ -58,7 +55,6 @@ export default function ChatList({ route, navigation }) {
       }
     })
 
-    console.log('....fetch..chats', { _chats, sortedChats, sortedChatsWithTimeStamp });
     setChats(sortedChatsWithTimeStamp)
   }
   React.useEffect(() => {

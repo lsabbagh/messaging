@@ -11,6 +11,7 @@ LogBox.ignoreLogs([
 
 const Stack = createNativeStackNavigator();
 
+import Intro from './Intro';
 import Chat from './Chat.screen';
 import ChatList from './ChatsList.screen';
 import SignInScreen from './SignIn.screen';
@@ -31,6 +32,8 @@ function App() {
   const [fetching, setFetching] = React.useState(false)
   const [receiver, setReceiver] = React.useState(null)
   const [visible, setVisible] = React.useState(false)
+  const [isIntroVisible, setIsIntroVisible] = React.useState(false);
+
 
   const user = savedData?.user;
   const token = savedData?.token;
@@ -48,14 +51,30 @@ function App() {
       console.log('....savedData', savedData);
     } catch (error) {
       setSavedData(null)
-      console.log('error', error);
+      console.log('....retrieveUser..error', error);
     }
 
     setFetching(false)
   }
 
+  // const checkIntroFlag = async () => {
+  //   try {
+  //     console.log('....checkIntroFlag', isIntroVisible);
+  //     const introFlag = await storage.getItem('introShown');
+  //     if (!introFlag) {
+  //       await storage.setItem('introShown', 'true');
+  //       setIsIntroVisible(true);
+  //     }
+  //   } catch (error) {
+  //     console.log('....checkIntroFlag..error', error);
+  //   }
+  // }
+
   React.useEffect(async () => {
     retrieveUser();
+    // setTimeout(()=> {
+    //   checkIntroFlag();
+    // }, 750)
   }, [])
 
   const onSignIn = (data) => {
@@ -84,31 +103,38 @@ function App() {
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.bg.i, } }}>
 
-        {isSignedIn && <>
-          <Stack.Screen name="Home" component={ChatList} initialParams={params} options={() => ({
-            headerTitle: "Chatoo",
-            headerTitleStyle: {
-              color: colors.font.s
-            }, headerRight:
-              () => (
-                <HeaderRight
-                  data={savedData}
-                  visibleMenu={visible}
-                  setVisibleMenu={handleMenuVisibilty}
-                  onLogOut={handleLogOut}
-                // onThemeChange={changeTheme}
-                />
-              )
-          })} />
-          <Stack.Screen name="Chat" component={Chat} initialParams={params} options={() => ({ headerTitle: receiver, headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
-          <Stack.Screen name="Users" component={UsersScreen} initialParams={params} options={() => ({ headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
-          <Stack.Screen name="Profile" component={ProfileScreen} initialParams={params} options={{ headerTitle: 'My Profile', headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` }} />
-        </>}
+        {/* {isIntroVisible && <> */}
+          {isSignedIn && <>
+            <Stack.Screen name="Home" component={ChatList} initialParams={params} options={() => ({
+              headerTitle: "Chatoo",
+              headerTitleStyle: {
+                color: colors.font.s
+              }, headerRight:
+                () => (
+                  <HeaderRight
+                    data={savedData}
+                    visibleMenu={visible}
+                    setVisibleMenu={handleMenuVisibilty}
+                    onLogOut={handleLogOut}
+                  // onThemeChange={changeTheme}
+                  />
+                )
+            })} />
+            <Stack.Screen name="Chat" component={Chat} initialParams={params} options={() => ({ headerTitle: receiver, headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
+            <Stack.Screen name="Users" component={UsersScreen} initialParams={params} options={() => ({ headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
+            <Stack.Screen name="Profile" component={ProfileScreen} initialParams={params} options={{ headerTitle: 'My Profile', headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` }} />
+          </>}
 
-        {!isSignedIn && <>
-          <Stack.Screen name="SignIn" component={SignInScreen} initialParams={{ onSignIn }} options={() => ({ headerTitle: "Chatoo", headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
-          <Stack.Screen name="ForgotPassword" component={ForgetPassword} options={() => ({ headerTitle: "Chatoo", headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })}/>
-        </>}
+          {!isSignedIn && <>
+            <Stack.Screen name="SignIn" component={SignInScreen} initialParams={{ onSignIn }} options={() => ({ headerTitle: "Chatoo", headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
+            <Stack.Screen name="ForgotPassword" component={ForgetPassword} options={() => ({ headerTitle: "Chatoo", headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
+          </>}
+        {/* </>} */}
+
+        {/* {!isIntroVisible && <>
+          <Stack.Screen name='Intro' component={Intro} options={{ headerShown: false }} />
+        </>} */}
+
 
 
       </Stack.Navigator>

@@ -17,6 +17,7 @@ export const getColors = (themeName) => {
                 iv: '#4FC0D0',  //torquoise blue
                 v: '#0069FB',   //bright blue
                 vi: '#098DF3',  //special blue Azure
+                vii: 'white'      //chatoo login color
             },
             font: {
                 i: 'white',     //white
@@ -36,6 +37,7 @@ export const getColors = (themeName) => {
             iv: '#4FC0D0',  //turquoise blue
             v: '#0069FB',   //bright blue
             vi: '#098DF3',  //special blue Azure
+            vii: '#05001E'  //chatoo intro color
         },
         font: {
             i: 'white',     //white

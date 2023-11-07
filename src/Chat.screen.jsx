@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { GiftedChat, InputToolbar, Bubble, Send } from 'react-native-gifted-chat';
+import { GiftedChat, InputToolbar, Bubble, Send, Avatar } from 'react-native-gifted-chat';
 import { appendMessages, getChat } from './service';
 import { URL } from '@env'
 import { View } from 'react-native';
@@ -48,6 +48,7 @@ const Chat = ({ route }) => {
   }, [])
 
   const append = async (newMessages) => {
+    console.log('....chat..append..message', newMessages);
     await appendMessages({
       conversationId: chat?.conversation?._id,
       messages: newMessages,
@@ -69,11 +70,19 @@ const Chat = ({ route }) => {
 
   const renderBubble = props => (
     <Bubble
-      {...props}
       usernameStyle={{ color: 'black', fontWeight: '200' }}
+      {...props}
     // tickStyle={{color: 'red'}}
     />
   )
+
+
+
+  const renderAvatar = props => {
+    //   if(type === 'group') 
+    return <Avatar {...props} />
+    //   return null;
+  }
 
   const textInputStyle = {
     backgroundColor: colors.bg.ii,//'lightgrey',
@@ -96,7 +105,7 @@ const Chat = ({ route }) => {
       <GiftedChat
         messages={chat?.messages}
         onSend={messages => append(messages)}
-        user={{ _id: user._id, name: user.username, avatar: profile }}
+        user={{ _id: user._id, name: user.username, avatar: user.profilePic }}
         renderUsernameOnMessage={type === 'group' ? true : false}
         textInputStyle={textInputStyle}
         renderInputToolbar={(props) => {
@@ -109,6 +118,7 @@ const Chat = ({ route }) => {
         }}
         renderSend={renderSend}
         renderBubble={renderBubble}
+        renderAvatar={renderAvatar}
         // showAvatarForEveryMessage={true}
         renderAvatarOnTop
         // showUserAvatar
