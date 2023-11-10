@@ -29,7 +29,7 @@ export const getStyles = (colors) => StyleSheet.create({
         padding: 20,
         borderBottomStyle: 'solid',
         borderBottomWidth: 1,
-        borderBottomColor: colors.font.iv,
+        borderBottomColor: colors.font.v,
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
