@@ -7,6 +7,7 @@ import { logout, storageData } from './service';
 import { useNavigation } from '@react-navigation/native';
 import { useTheme } from './styles/ThemeContext';
 import { getColors, colors } from './styles/theme';
+import { getStyles } from './styles/HeaderRight';
 
 const HeaderRight = ({ data, visibleMenu, setVisibleMenu, onLogOut, onThemeChange }) => {
 
@@ -17,6 +18,7 @@ const HeaderRight = ({ data, visibleMenu, setVisibleMenu, onLogOut, onThemeChang
 
     const { name, toggle } = useTheme();
     const colors = getColors(name);
+    const styles = getStyles(colors)
 
     const changeTheme = () => {
         console.log('....changeTheme',);
@@ -37,7 +39,7 @@ const HeaderRight = ({ data, visibleMenu, setVisibleMenu, onLogOut, onThemeChang
 
 
     return (
-        <View style={{ marginRight: 3, height: 'auto', width: 'auto' }}>
+        <View style={styles.container}>
             {/* <Text>{name}</Text> */}
             <Menu
                 visible={visibleMenu}
@@ -49,11 +51,12 @@ const HeaderRight = ({ data, visibleMenu, setVisibleMenu, onLogOut, onThemeChang
                         onPress={() => setVisibleMenu(true)}
                     />
                 }
+                style={styles.menu}
                 onRequestClose={() => setVisibleMenu(false)}
             >
-                <MenuItem onPress={() => navigator.navigate('Profile')}>My Profile</MenuItem>
-                <MenuItem onPress={changeTheme}>Change Theme</MenuItem>
-                <MenuItem onPress={() => handleLogout(user)}>Log Out</MenuItem>
+                <MenuItem textStyle={styles.item} onPress={() => navigator.navigate('Profile')}>My Profile</MenuItem>
+                <MenuItem textStyle={styles.item} onPress={changeTheme}>Change Theme</MenuItem>
+                <MenuItem textStyle={styles.item} onPress={() => handleLogout(user)}>Log Out</MenuItem>
             </Menu>
         </View>
     )

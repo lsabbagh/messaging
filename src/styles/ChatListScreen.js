@@ -45,6 +45,9 @@ export const getStyles = (colors) => StyleSheet.create({
         borderRadius: 20,
         marginRight: 10,
         top: 1,
+        borderColor: colors.bg.iii,
+        borderStyle: 'solid',
+        borderWidth: 1,
     },
     chatName: {
         fontSize: sizes.par,

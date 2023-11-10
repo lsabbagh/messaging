@@ -5,7 +5,7 @@ export const getStyles = (colors) => StyleSheet.create({
     container: {
         height: '100%',
         width: '100%',
-        backgroundColor: colors.bg.i
+        // backgroundColor: colors.bg.i
     },
     sendBtn: {
         // paddingBottom: 20,
@@ -15,5 +15,8 @@ export const getStyles = (colors) => StyleSheet.create({
         position: 'relative',
         backgroundColor: colors.bg.ii,
         borderRadius: 18
+    },
+    image: {
+        flex: 1
     },
 })

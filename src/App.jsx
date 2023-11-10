@@ -98,12 +98,12 @@ function App() {
   const params = { user, getReceiver, token }
 
   if (fetching) { return <ActivityIndicator size={'large'} /> }
+  console.log('....fetching', fetching);
 
   return (
     <NavigationContainer>
       <Stack.Navigator screenOptions={{ headerStyle: { backgroundColor: colors.bg.i, } }}>
 
-        {/* {isIntroVisible && <> */}
           {isSignedIn && <>
             <Stack.Screen name="Home" component={ChatList} initialParams={params} options={() => ({
               headerTitle: "Chatoo",
@@ -129,13 +129,6 @@ function App() {
             <Stack.Screen name="SignIn" component={SignInScreen} initialParams={{ onSignIn }} options={() => ({ headerTitle: "Chatoo", headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
             <Stack.Screen name="ForgotPassword" component={ForgetPassword} options={() => ({ headerTitle: "Chatoo", headerTitleStyle: { color: colors.font.iii }, headerTintColor: `${colors.font.iii}` })} />
           </>}
-        {/* </>} */}
-
-        {/* {!isIntroVisible && <>
-          <Stack.Screen name='Intro' component={Intro} options={{ headerShown: false }} />
-        </>} */}
-
-
 
       </Stack.Navigator>
     </NavigationContainer>

@@ -26,9 +26,15 @@ export default function ChatList({ route, navigation }) {
     const sortedChatsWithTimeStamp = sortedChats?.map(chat => {
       let lastMessageDate = chat?.lastMessage;
       const lastMessage = new Date(lastMessageDate)
-      if (!(lastMessage instanceof Date)) return null
+      if (!(lastMessage instanceof Date)) {
+        chat.lastMessage = null
+        return chat
+      };
       const currentTime = new Date();
-      if (isNaN(lastMessage)) return;
+      if (isNaN(lastMessage)) {
+        chat.lastMessage = null
+        return chat
+      };
       if (lastMessage.getFullYear() === currentTime.getFullYear()) {
         const year = lastMessage.getFullYear();
         const month = lastMessage.getMonth();
@@ -100,21 +106,21 @@ export default function ChatList({ route, navigation }) {
       {/* <Button onPress={onButtonPress} title="Sign Out" style={styles.Button}>hello</Button> */}
       <FlatList
         data={chats}
-        keyExtractor={item => item._id}
+        keyExtractor={item => item?._id}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.chatButton} onPress={() => onChatSelect({ item })}>
             <View style={styles.profileContainer}>
               <Image
                 style={styles.profilePic}
-                src={item.type === 'group' ? item.profile : (item.otherParticipant?.profilePic)}
+                src={item?.type === 'group' ? item?.profile : (item?.otherParticipant?.profilePic)}
                 resizeMode='contain'
               />
               <Text style={styles.chatName}>
-                {item.type === 'group' ? item.title : (item.otherParticipant?.username)}
+                {item?.type === 'group' ? item?.title : (item?.otherParticipant?.username)}
               </Text>
             </View>
             <Text style={styles.timeStamp}>
-              {item.lastMessage}
+              {item?.lastMessage}
             </Text>
           </TouchableOpacity>
         )}

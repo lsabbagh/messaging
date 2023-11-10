@@ -1,5 +1,7 @@
-import { URL } from '@env'
+// import { URL } from '@env'
 import storage from './storage';
+
+const URL = 'https://chatoo-api.onrender.com/api/'
 
 export const storageData = async () => {
     const response = await storage.load({ key: 'auth', autoSync: true, syncInBackground: true });

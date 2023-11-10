@@ -25,7 +25,11 @@ export const getColors = (themeName) => {
                 iii: 'black',   //black
                 iv: '#888888',  //dark grey
                 v: '#ccc',      //light grey
+                vi: '#555555',  //darker grey
                 s: '#0069FB',   //bright blue
+            },
+            image: {
+                chatBackground: './images/chat-app-background.png'
             }
         }
     }
@@ -45,7 +49,11 @@ export const getColors = (themeName) => {
             iii: 'white',   //white
             iv: '#ccc',     //light grey
             v: '#888888',   //dark grey
+            vi: '#ddd',  //lighter grey
             s: '#0069FB',   //bright blue
+        },
+        image: {
+            chatBackground: './images/chat-app-background-dark.jpg'
         }
     };
 }

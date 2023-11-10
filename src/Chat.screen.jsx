@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { GiftedChat, InputToolbar, Bubble, Send, Avatar } from 'react-native-gifted-chat';
 import { appendMessages, getChat } from './service';
 import { URL } from '@env'
-import { View } from 'react-native';
+import { View, ImageBackground } from 'react-native';
 import { getColors, sizes, colors } from './styles/theme';
 import { getStyles } from './styles/ChatScreen';
 import { useTheme } from './styles/ThemeContext';
@@ -58,6 +58,12 @@ const Chat = ({ route }) => {
     fetchChat()
   }
 
+  const imageSources = {
+    light: require('./styles/images/chat-app-background.png'),
+    dark: require('./styles/images/chat-app-background-dark.jpg'),
+  };
+  const imageSrc = imageSources[name];
+
   const renderSend = (props) => {
     return (
       <Send {...props}>
@@ -102,31 +108,33 @@ const Chat = ({ route }) => {
   console.log('....chat3', { chat, receiver, profile });
   return (
     <View style={styles.container}>
-      <GiftedChat
-        messages={chat?.messages}
-        onSend={messages => append(messages)}
-        user={{ _id: user._id, name: user.username, avatar: user.profilePic }}
-        renderUsernameOnMessage={type === 'group' ? true : false}
-        textInputStyle={textInputStyle}
-        renderInputToolbar={(props) => {
-          return (
-            <InputToolbar
-              containerStyle={{ background: 'none', border: 'none', backgroundColor: colors.bg.i }}
-              {...props}
-            />
-          )
-        }}
-        renderSend={renderSend}
-        renderBubble={renderBubble}
-        renderAvatar={renderAvatar}
-        // showAvatarForEveryMessage={true}
-        renderAvatarOnTop
-        // showUserAvatar
-        alwaysShowSend
-        scrollToBottom
-        infiniteScroll
-        messagesContainerStyle={{ backgroundColor: backgroundColor, border: 'none' }}  // background color
-      />
+      <ImageBackground source={imageSrc} resizeMode="cover" style={styles.image}>
+        <GiftedChat
+          messages={chat?.messages}
+          onSend={messages => append(messages)}
+          user={{ _id: user._id, name: user.username, avatar: user.profilePic }}
+          renderUsernameOnMessage={type === 'group' ? true : false}
+          textInputStyle={textInputStyle}
+          renderInputToolbar={(props) => {
+            return (
+              <InputToolbar
+            containerStyle={{ background: 'none', border: 'none', backgroundColor: colors.bg.i, }}
+                {...props}
+              />
+            )
+          }}
+          renderSend={renderSend}
+          renderBubble={renderBubble}
+          renderAvatar={renderAvatar}
+          // showAvatarForEveryMessage={true}
+          renderAvatarOnTop
+          // showUserAvatar
+          alwaysShowSend
+          scrollToBottom
+          infiniteScroll
+          messagesContainerStyle={{ backgroundColor: 'none'/*backgroundColor*/ , border: 'none' }}  // background color of the whole page
+        />
+      </ImageBackground>
     </View>
   );
 }
