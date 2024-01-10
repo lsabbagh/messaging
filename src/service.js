@@ -2,6 +2,7 @@
 import storage from './storage';
 
 const URL = 'https://chatoo-api.onrender.com/api/'
+// const URL=process.env.URL
 
 export const storageData = async () => {
     const response = await storage.load({ key: 'auth', autoSync: true, syncInBackground: true });
@@ -53,6 +54,27 @@ export const logout = async ({ userId, token }) => {
     console.log('....service..logoutt', data);
     return data;
 };
+
+export const forgetPass = async (username, email) => {
+    console.log('....forgetPass..begin',{username, email} );
+    const response = await fetch(URL + "changePassword/user/forgetPassword", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "access-control-allow-origin": "*",
+        },
+        body: JSON.stringify({ username, email })
+    })
+    if (!response.ok) {
+        console.log('....error logging out', response);
+        throw new Error('Network response was not ok');
+    }
+    console.log('....forgetPass..res', response);
+    const data = await response.json();
+    console.log('....forgetPass..data', data);
+    return data;
+};
+
 
 
 export const getUsers = async ({ userId, token }) => {
