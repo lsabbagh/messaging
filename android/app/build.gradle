@@ -76,7 +76,7 @@ android {
 
     namespace "com.messaging"
     defaultConfig {
-        applicationId "com.messaging"
+        applicationId "com.messaging.chatoo"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

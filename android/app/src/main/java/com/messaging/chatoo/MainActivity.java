@@ -1,4 +1,4 @@
-package com.messaging;
+package com.messaging.chatoo;
 
 import android.os.Bundle;
 

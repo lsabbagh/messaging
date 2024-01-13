@@ -35,11 +35,11 @@ export default function ChatList({ route, navigation }) {
         chat.lastMessage = null
         return chat
       };
-      if (lastMessage.getFullYear() === currentTime.getFullYear()) {
-        const year = lastMessage.getFullYear();
-        const month = lastMessage.getMonth();
-        const day = lastMessage.getDate();
-        const formattedDate = `${day}/${month}/${year}`;
+      const year = lastMessage.getFullYear();
+      const month = lastMessage.getMonth();
+      const day = lastMessage.getDate();
+      const formattedDate = `${day}/${month}/${year}`;
+      if (lastMessage.getFullYear() === currentTime.getFullYear()) {  
         if (lastMessage.getMonth() === currentTime.getMonth()) {
           if (lastMessage.getDate() === currentTime.getDate()) {
             const hours = lastMessage.getHours();

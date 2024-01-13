@@ -26,6 +26,11 @@ import { getColors, colors } from './styles/theme';
 import { logout, storageData } from './service';
 
 
+// footer cms
+// test super password env file
+// response message in forget Pass
+// update useffect in cms for groups and users
+
 function App() {
 
   const [savedData, setSavedData] = React.useState(null)
@@ -97,8 +102,10 @@ function App() {
   const isSignedIn = !!token;
   const params = { user, getReceiver, token }
 
-  if (fetching) { return <ActivityIndicator size={'large'} /> }
-  console.log('....fetching', fetching);
+  if (fetching) { 
+    console.log('....fetching', fetching);
+    return <ActivityIndicator size={'large'} /> 
+  }
 
   return (
     <NavigationContainer>
@@ -140,3 +147,11 @@ export default () => (
     <App />
   </ThemeProvider>
 )
+
+
+// BUILD UR APP INTO AN APK:
+// npx react-native build-android
+// cd android
+// ./gradlew assembleRelease
+// go to this path
+// android/app/build/outputs/apk/release/app-release.apk
