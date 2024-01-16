@@ -1,13 +1,13 @@
 import React from 'react'
-import storage from './storage';
+import storage from '../storage';
 import { Button, TouchableOpacity, View, Text } from 'react-native';
 import { Menu, MenuItem, MenuDivider } from 'react-native-material-menu';
 import Icon from 'react-native-vector-icons/Entypo';
-import { logout, storageData } from './service';
+import { logout, storageData } from '../service';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from './styles/ThemeContext';
-import { getColors, colors } from './styles/theme';
-import { getStyles } from './styles/HeaderRight';
+import { useTheme } from '../styles/ThemeContext';
+import { getColors, colors } from '../styles/theme';
+import { getStyles } from '../styles/HeaderRight';
 
 const HeaderRight = ({ data, visibleMenu, setVisibleMenu, onLogOut, onThemeChange }) => {
 

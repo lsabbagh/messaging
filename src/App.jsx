@@ -11,14 +11,14 @@ LogBox.ignoreLogs([
 
 const Stack = createNativeStackNavigator();
 
-import Intro from './Intro';
+import Intro from './minorFiles/Intro';
 import Chat from './Chat.screen';
 import ChatList from './ChatsList.screen';
 import SignInScreen from './SignIn.screen';
 import UsersScreen from './Users.screen';
 import ForgetPassword from './ForgotPassword.Screen';
 import ProfileScreen from './Profile.Screen';
-import HeaderRight from './HeaderRight';
+import HeaderRight from './minorFiles/HeaderRight';
 // import ChatHeaderRight from './ChatHeaderRight'
 // import useTheme from './styles/useTheme';
 import { ThemeProvider, useTheme } from './styles/ThemeContext';
@@ -26,7 +26,6 @@ import { getColors, colors } from './styles/theme';
 import { logout, storageData } from './service';
 
 
-// footer cms
 // test super password env file
 // response message in forget Pass
 // update useffect in cms for groups and users

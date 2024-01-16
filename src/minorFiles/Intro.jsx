@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, Image, Text, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useTheme } from './styles/ThemeContext';
-import { getColors } from './styles/theme';
+import { useTheme } from '../styles/ThemeContext';
+import { getColors } from '../styles/theme';
 
-import App from './App';
+import App from '../App';
 
 
 

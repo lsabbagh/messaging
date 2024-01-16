@@ -8,6 +8,7 @@ import storage from './storage';
 import { getStyles } from './styles/ChatListScreen'
 import { getColors, colors } from './styles/theme';
 import { useTheme } from './styles/ThemeContext';
+import ChatsWithTimeStamp from './minorFiles/ChatsWithTimeStamp';
 
 
 export default function ChatList({ route, navigation }) {
@@ -22,52 +23,17 @@ export default function ChatList({ route, navigation }) {
   const fetchChats = async () => {
     const _chats = await getChats({ user, token })
     let sortedChats = _chats.slice().sort((a, b) => new Date(b.lastMessage) - new Date(a.lastMessage));
-
-    const sortedChatsWithTimeStamp = sortedChats?.map(chat => {
-      let lastMessageDate = chat?.lastMessage;
-      const lastMessage = new Date(lastMessageDate)
-      if (!(lastMessage instanceof Date)) {
-        chat.lastMessage = null
-        return chat
-      };
-      const currentTime = new Date();
-      if (isNaN(lastMessage)) {
-        chat.lastMessage = null
-        return chat
-      };
-      const year = lastMessage.getFullYear();
-      const month = lastMessage.getMonth();
-      const day = lastMessage.getDate();
-      const formattedDate = `${day}/${month}/${year}`;
-      if (lastMessage.getFullYear() === currentTime.getFullYear()) {  
-        if (lastMessage.getMonth() === currentTime.getMonth()) {
-          if (lastMessage.getDate() === currentTime.getDate()) {
-            const hours = lastMessage.getHours();
-            const minutes = lastMessage.getMinutes();
-            const formattedTime = `${hours}:${minutes}`;
-            chat.lastMessage = formattedTime;
-            return chat
-          } else {
-            chat.lastMessage = formattedDate;
-            return chat
-          }
-        } else {
-          chat.lastMessage = formattedDate;
-          return chat
-        }
-      } else {
-        chat.lastMessage = formattedDate;
-        return chat
-      }
-    })
+    const sortedChatsWithTimeStamp = ChatsWithTimeStamp(sortedChats)
 
     setChats(sortedChatsWithTimeStamp)
   }
+
   React.useEffect(() => {
     fetchChats()
   }, [])
 
   const onSelect = participant => {
+    // Chat.isGroup(converastion.item)     ......CHECK THIS OUT!!!.....
     console.log('....par', participant);
     // const conversationName = participant.username;
     navigator.navigate('Chat', {
@@ -82,6 +48,7 @@ export default function ChatList({ route, navigation }) {
   const onChatSelect = (converastion) => {
     console.log('....par', user, '\n', 'pp', converastion);
     const type = converastion.item.type;
+    // const {title,otherParticipant,profilePic } = converastion.item
     const title = type === 'group' ? converastion.item.title : converastion.item.otherParticipant.username
     const profile = type === 'group' ? converastion.item.profilePic : converastion.item.otherParticipant.profilePic
     navigator.navigate('Chat', {
@@ -109,28 +76,33 @@ export default function ChatList({ route, navigation }) {
         keyExtractor={item => item?._id}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.chatButton} onPress={() => onChatSelect({ item })}>
+
             <View style={styles.profileContainer}>
               <Image
                 style={styles.profilePic}
                 src={item?.type === 'group' ? item?.profile : (item?.otherParticipant?.profilePic)}
                 resizeMode='contain'
               />
+
               <Text style={styles.chatName}>
                 {item?.type === 'group' ? item?.title : (item?.otherParticipant?.username)}
               </Text>
             </View>
+
             <Text style={styles.timeStamp}>
               {item?.lastMessage}
             </Text>
+
           </TouchableOpacity>
         )}
       />
+
       {!chats?.length && <Text style={styles.noItems} > No Chats Found</Text>}
       <FAB title="+" placement='right' type='solid' color={colors.bg.v}
         onPress={() => {
           navigation.navigate('Users', { onSelect })
-        }} />
-
+        }} 
+      />
 
     </View>
   );
